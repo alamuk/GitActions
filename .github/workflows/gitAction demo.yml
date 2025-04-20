@@ -1,0 +1,41 @@
+name: A basic Workflow
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: run one line script
+        run: echo "Hello World"
+
+      - name: run multiple scripts
+        run: |
+          echo Hello multiple lines 
+          echo test for multiple lines
+
+  build-db:
+    needs: build-app
+    runs-on: windows-latest
+    steps:
+      - run: echo "Hello Windows"
+
+  build-api:
+    runs-on: windows-latest
+    steps:
+      - run: echo "build APi"
+
+  package:
+    needs: [build-app, build-db]
+    runs-on: macos-latest
+    steps:
+      - run: echo "hello macos"
